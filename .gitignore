@@ -1,0 +1,56 @@
+# Applications (each has its own repository)
+empiv/
+jam-de-vientos/
+music-learning-app/
+sheet-api/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Database
+*.sqlite3
+*.db
+
+# Media files (large files should be in individual repos)
+media/
+uploads/
+
+# La idea es dejar el repositorio music-projects
+# solo para la documentacion y dockerizacion de
+# los proyectos musicales. Las sessions y el context
