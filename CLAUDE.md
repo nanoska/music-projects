@@ -399,3 +399,6 @@ Each project has its own detailed `CLAUDE.md` file with specific architecture de
 - `/jam-de-vientos/CLAUDE.md`
 - `/music-learning-app/CLAUDE.md`
 - `/sheet-api/CLAUDE.md`
+- Minimiza la creacion de codigo propio, maximiza el uso de librerias, componentes y modulos importables y el uso dle protocolo mcp siempre que se pueda.\
+Para los desarrollos solicitados, hay que rear una rama en el repo correspondiente, desarrollar, documentar, mergear, pushear y eliminar la rama luego de terminar.\
+Tambien hay que documentar la vision general de lo desarrollad e implementado en el repo 'root' que es el de nanoska/music-projects
