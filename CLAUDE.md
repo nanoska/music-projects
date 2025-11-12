@@ -61,6 +61,42 @@ Sheet music management system for wind orchestras and bands with automatic trans
 - **Features**: Theme/version management, instrument transposition, event/repertoire organization
 - **Ports**: Frontend 3000, Backend 8000
 
+## Orchestration and Multi-Service Management
+
+For managing multiple applications together, see the detailed [ORCHESTRATION.md](./ORCHESTRATION.md) guide.
+
+### Quick Start Commands
+
+**Start all applications:**
+```bash
+./scripts/start-all.sh
+```
+
+**Start API stack only (Sheet-API + Jam de Vientos):**
+```bash
+./scripts/start-api-stack.sh
+```
+
+**Stop all applications:**
+```bash
+./scripts/stop-all.sh
+```
+
+**View logs:**
+```bash
+./scripts/logs.sh [service-name] -f
+# Available services: sheet-api, jam-de-vientos, music-learning, empiv, all
+```
+
+### Service URLs (when all running)
+- Sheet-API Frontend: http://localhost:3000
+- Sheet-API Backend: http://localhost:8000
+- Jam de Vientos: http://localhost:3001
+- Music Learning (FE): http://localhost:3002
+- Music Learning (BE): http://localhost:8001
+- EMPIV Web (FE): http://localhost:3003
+- EMPIV Web (BE): http://localhost:8002
+
 ## Common Development Commands
 
 ### React Projects (empiv-web, music-learning-app, sheet-api, jam-de-vientos)
