@@ -25,9 +25,8 @@ show_usage() {
 
     echo -e "${YELLOW}Available Services:${NC}"
     echo -e "  ${GREEN}sheet-api${NC}          - Sheet Music API (frontend + backend + db)"
-    echo -e "  ${GREEN}jam-de-vientos${NC}     - Jam de Vientos frontend"
-    echo -e "  ${GREEN}music-learning${NC}     - Music Learning App (frontend + backend + db)"
-    echo -e "  ${GREEN}empiv${NC}              - EMPIV Web (frontend + backend + db)"
+    echo -e "  ${GREEN}jam${NC}                - Jam de Vientos frontend"
+    echo -e "  ${GREEN}music-learning${NC}     - Music Learning App frontend"
     echo -e "  ${GREEN}all${NC}                - All services (aggregated logs)\n"
 
     echo -e "${YELLOW}Options:${NC}"
@@ -37,7 +36,8 @@ show_usage() {
 
     echo -e "${YELLOW}Examples:${NC}"
     echo -e "  ./scripts/logs.sh sheet-api -f"
-    echo -e "  ./scripts/logs.sh jam-de-vientos --lines 50"
+    echo -e "  ./scripts/logs.sh jam --lines 50"
+    echo -e "  ./scripts/logs.sh music-learning -f"
     echo -e "  ./scripts/logs.sh all -f\n"
 }
 
@@ -75,17 +75,14 @@ done
 # Map service names to directories
 get_service_dir() {
     case $1 in
-        sheet-api)
+        sheet-api|api)
             echo "$BASE_DIR/sheet-api"
             ;;
-        jam-de-vientos)
+        jam|jam-de-vientos)
             echo "$BASE_DIR/jam-de-vientos"
             ;;
-        music-learning)
+        music-learning|musiclearn)
             echo "$BASE_DIR/music-learning-app"
-            ;;
-        empiv)
-            echo "$BASE_DIR/empiv/empiv-web"
             ;;
         *)
             echo ""
@@ -131,7 +128,7 @@ show_all_logs() {
     echo -e "${BLUE}========================================${NC}\n"
 
     # Get all running containers from music-projects
-    CONTAINERS=$(docker ps --filter "name=sheet-api|jam-de-vientos|music-learning|empiv" --format "{{.Names}}")
+    CONTAINERS=$(docker ps --filter "name=sheet-api|jam-de-vientos|music-learning" --format "{{.Names}}")
 
     if [ -z "$CONTAINERS" ]; then
         echo -e "${YELLOW}No running containers found${NC}"

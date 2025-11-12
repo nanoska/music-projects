@@ -1172,6 +1172,250 @@ Actualizar `music-projects/README.md` con:
 
 ---
 
+### FASE 9: Jam de Vientos v2.0 - Multi-Evento y Portada
+
+**Rama Git**: `feature/multi-event-architecture`
+**Duración estimada**: 8-12 horas
+**Prioridad**: Alta (post-producción v1.0)
+
+#### Objetivo:
+Transformar Jam de Vientos en una plataforma multi-evento con portada profesional, calendar io interactivo y URLs dinámicas basadas en slugs.
+
+#### 9.1 Backend (Sheet-API)
+
+**Tareas**:
+1. ⬜ Agregar campo `slug` al modelo Event (SlugField, unique)
+2. ⬜ Implementar generación automática de slugs en save()
+3. ⬜ Crear migración de base de datos
+4. ⬜ Crear endpoint `/api/v1/events/jamdevientos/by-slug/`
+5. ⬜ Crear modelo EventPhoto con campos: event, image, caption, photographer, is_public
+6. ⬜ Crear ViewSet y serializer para EventPhoto
+7. ⬜ Testing de endpoints nuevos
+
+**Cambios en modelos**:
+```python
+class Event(models.Model):
+    # ... campos existentes ...
+    slug = models.SlugField(max_length=100, unique=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self.generate_slug()
+        super().save(*args, **kwargs)
+
+class EventPhoto(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='photos')
+    image = models.ImageField(upload_to='event_photos/')
+    caption = models.CharField(max_length=200, blank=True)
+    photographer = models.CharField(max_length=100, blank=True)
+    is_public = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+```
+
+#### 9.2 Frontend (Jam de Vientos)
+
+**Estructura de Rutas**:
+```
+app/
+├── page.tsx                      # Portada con hero + calendario
+├── eventos/page.tsx              # Lista completa de eventos
+├── sobre-nosotros/page.tsx       # Información institucional
+├── galeria/page.tsx              # Galería de fotos
+└── [eventSlug]/
+    └── page.tsx                  # Página del evento (carousel)
+```
+
+**Tareas**:
+1. ⬜ Crear nueva estructura de rutas en App Router
+2. ⬜ Implementar página portada con HeroSection component
+3. ⬜ Integrar FullCalendar o React Big Calendar
+4. ⬜ Crear EventsCalendar component
+5. ⬜ Crear página "Sobre Nosotros" con contenido institucional
+6. ⬜ Crear galería de fotos con PhotoSwipe o React Image Gallery
+7. ⬜ Implementar dynamic route `[eventSlug]`
+8. ⬜ Migrar carousel existente a la ruta dinámica
+9. ⬜ Implementar función generateSlug() en cliente
+10. ⬜ Implementar generateMetadata() para SEO dinámico
+11. ⬜ Testing responsive (móvil, tablet, desktop)
+
+**Librerías a instalar**:
+```bash
+npm install @fullcalendar/react @fullcalendar/daygrid @fullcalendar/interaction
+npm install photoswipe react-image-gallery
+npm install framer-motion  # Para animaciones
+```
+
+#### 9.3 Contenido
+
+**Tareas**:
+1. ⬜ Recopilar fotos de eventos para galería
+2. ⬜ Escribir textos para "Sobre Nosotros"
+3. ⬜ Crear o conseguir imágenes hero de alta calidad
+4. ⬜ Preparar metadata de eventos (descripciones, imágenes OG)
+
+**Entregables**:
+- Sitio multi-evento completamente funcional
+- Portada profesional con hero section
+- Calendario interactivo de eventos
+- Sección institucional "Sobre Nosotros"
+- Galería de fotos navegable
+- SEO optimizado con metadata dinámica
+- URLs amigables con slugs
+
+---
+
+### FASE 10: Lector de Partituras Avanzado para Móviles
+
+**Rama Git**: `feature/advanced-sheet-music-reader`
+**Duración estimada**: 12-16 horas
+**Prioridad**: Alta (feature estrella para músicos)
+
+#### Objetivo:
+Crear un lector de partituras profesional optimizado para móviles con sincronización de audio, control de tempo, metrónomo integrado y modo performance.
+
+#### 10.1 Setup Inicial
+
+**Tareas**:
+1. ⬜ Instalar PDF.js y react-pdf
+2. ⬜ Configurar PDF.js worker
+3. ⬜ Crear estructura de componentes en `components/sheet-music-reader/`
+4. ⬜ Setup de Zustand para state management del lector
+
+**Librerías a instalar**:
+```bash
+npm install react-pdf pdfjs-dist
+npm install zustand  # State management
+npm install tone  # Web Audio API wrapper (opcional)
+```
+
+**Nueva ruta**:
+```
+app/[eventSlug]/partituras/[versionId]/page.tsx
+```
+
+#### 10.2 Visualización de PDF
+
+**Componentes**:
+- `PDFViewer.tsx`: Renderizado del PDF con react-pdf
+- `PageNavigator.tsx`: Navegación entre páginas
+- `ZoomControls.tsx`: Controles de zoom
+
+**Tareas**:
+1. ⬜ Implementar PDFViewer component con react-pdf
+2. ⬜ Implementar zoom (pinch gesture, botones +/-)
+3. ⬜ Implementar navegación de páginas (swipe, botones)
+4. ⬜ Crear thumbnail sidebar para vista rápida
+5. ⬜ Implementar loading states y error handling
+6. ⬜ Optimizar renderizado (solo página visible)
+
+#### 10.3 Reproductor de Audio con Control de Tempo
+
+**Componentes**:
+- `AudioPlayer.tsx`: Reproductor principal
+- `TempoControl.tsx`: Slider y presets de tempo
+
+**Tareas**:
+1. ⬜ Crear clase AudioPlayerWithTempo usando Web Audio API
+2. ⬜ Implementar cambio de playback rate (0.5x - 2.0x)
+3. ⬜ Preservar pitch al cambiar tempo
+4. ⬜ Crear TempoControl component con slider y presets
+5. ⬜ Implementar controles play/pause/stop
+6. ⬜ Display de tiempo actual y duración
+7. ⬜ Progress bar interactivo
+8. ⬜ Testing de performance en móviles
+
+#### 10.4 Metrónomo Integrado
+
+**Componentes**:
+- `Metronome.tsx`: Metrónomo audible y visual
+- `MetronomeControl.tsx`: Controles de BPM
+
+**Tareas**:
+1. ⬜ Crear clase Metronome con Web Audio API
+2. ⬜ Generar sonidos de click (normal y accent)
+3. ⬜ Implementar beat visual (círculos pulsantes)
+4. ⬜ Crear MetronomeControl con slider de BPM (40-240)
+5. ⬜ Sincronizar metrónomo con tempo del audio
+6. ⬜ Control de volumen del metrónomo
+7. ⬜ Configuración de subdivisiones (opcional para v2.1)
+
+#### 10.5 Scrolling Automático Sincronizado
+
+**Backend (Sheet-API)**:
+1. ⬜ Agregar campo `page_timestamps` (JSONField) al modelo Version
+2. ⬜ Crear migración
+3. ⬜ Actualizar serializer para incluir page_timestamps
+4. ⬜ Crear UI en admin de Sheet-API para configurar timestamps
+
+**Frontend**:
+1. ⬜ Implementar hook `useAutoScroll()`
+2. ⬜ Calcular página actual basándose en currentTime del audio
+3. ⬜ Smooth transition entre páginas
+4. ⬜ Indicador visual de próximo cambio de página
+5. ⬜ Testing de sincronización con diferentes tempos
+
+**Formato de page_timestamps**:
+```json
+[
+  { "page": 1, "timestamp": 0 },
+  { "page": 2, "timestamp": 45 },
+  { "page": 3, "timestamp": 90 },
+  { "page": 4, "timestamp": 135 }
+]
+```
+
+#### 10.6 Modo Performance
+
+**Componente**: `PerformanceMode.tsx`
+
+**Tareas**:
+1. ⬜ Implementar fullscreen automático (Fullscreen API)
+2. ⬜ Implementar Wake Lock API (evitar que pantalla se apague)
+3. ⬜ Lock de orientación (Screen Orientation API)
+4. ⬜ Controles grandes y táctiles para móvil
+5. ⬜ Modo oscuro optimizado para lectura
+6. ⬜ Brightness control (opcional)
+7. ⬜ Testing en iOS y Android
+
+#### 10.7 Integración y UI/UX
+
+**Componente Principal**: `SheetMusicReader.tsx`
+
+**Tareas**:
+1. ⬜ Integrar todos los subcomponentes en SheetMusicReader
+2. ⬜ Implementar ControlPanel con todos los controles
+3. ⬜ State management con Zustand (audio, PDF, settings)
+4. ⬜ Diseño responsive (móvil primero)
+5. ⬜ Gestos táctiles (pinch, swipe, double-tap)
+6. ⬜ Feedback visual de interacciones
+7. ⬜ Dark mode nativo
+8. ⬜ Persistencia de preferencias (localStorage)
+
+#### 10.8 Testing y Optimización
+
+**Tareas**:
+1. ⬜ Testing en iPhone (Safari iOS)
+2. ⬜ Testing en Android (Chrome)
+3. ⬜ Testing en tablets
+4. ⬜ Testing de performance (FPS, memory)
+5. ⬜ Optimización de carga de PDFs grandes
+6. ⬜ Testing de batería (Wake Lock impact)
+7. ⬜ Testing de sincronización audio-scroll
+8. ⬜ Validación con músicos reales
+
+**Entregables**:
+- Lector de partituras totalmente funcional
+- Visualización PDF de alta calidad
+- Sincronización audio-partitura
+- Control de tempo preservando pitch
+- Metrónomo integrado con beat visual
+- Modo performance (fullscreen, no-sleep)
+- Optimizado para móviles (iOS y Android)
+- Testing completo en dispositivos reales
+- Documentación de uso para músicos
+
+---
+
 ## 5. Workflow de Git
 
 ### 5.1 Estrategia de Branches
@@ -1283,7 +1527,7 @@ ci: cambios en CI/CD
 - SheetMusicAPI client (ya implementado)
 - Auth context pattern (migrar a JWT)
 
-### 6.3 Nuevas Librerías Recomendadas (si es necesario)
+### 6.3 Nuevas Librerías para Producción v1.0
 
 **Monitoreo y Logging**:
 - `winston` o `pino` (logging estructurado Node.js)
@@ -1301,13 +1545,51 @@ ci: cambios en CI/CD
 - `pm2` (process manager - alternativa a standalone si es necesario)
 - `nginx` (reverse proxy - ya planificado)
 
+### 6.4 Nuevas Librerías para v2.0
+
+**Multi-Evento y Portada** (FASE 9):
+```json
+{
+  "@fullcalendar/react": "^6.1.0",        // Calendario interactivo
+  "@fullcalendar/daygrid": "^6.1.0",      // Vista día/semana/mes
+  "@fullcalendar/interaction": "^6.1.0",   // Interacciones touch/click
+  "photoswipe": "^5.4.0",                  // Lightbox para galería
+  "react-image-gallery": "^1.3.0",         // Alternativa galería
+  "framer-motion": "^10.16.0"              // Animaciones fluidas
+}
+```
+
+**Lector de Partituras Avanzado** (FASE 10):
+```json
+{
+  "react-pdf": "^7.7.0",                   // Wrapper React para PDF.js
+  "pdfjs-dist": "^3.11.0",                 // PDF.js core
+  "zustand": "^4.5.0",                     // State management ligero
+  "tone": "^14.7.77"                       // Web Audio API wrapper (opcional)
+}
+```
+
+**APIs Web (no requieren instalación)**:
+- **Web Audio API**: Control de audio y tempo (nativo)
+- **Wake Lock API**: Evitar sleep en modo performance (nativo)
+- **Fullscreen API**: Modo fullscreen (nativo)
+- **Screen Orientation API**: Lock de orientación (nativo)
+- **Page Visibility API**: Pausar al cambiar tab (nativo)
+
+**Alternativas evaluadas**:
+- ❌ **VexFlow**: Demasiado complejo para PDFs simples
+- ❌ **ABCjs**: Específico para notación ABC, no PDFs
+- ✅ **PDF.js**: Standard industry, bien mantenido, performance probado
+
 ---
 
 ## 7. Cronograma Estimado
 
+### Producción v1.0 (Lectura Básica)
+
 | Fase | Duración | Responsable | Estado |
 |------|----------|-------------|--------|
-| 1. Documentación | 2-3 horas | Dev | 🔄 En progreso |
+| 1. Documentación | 2-3 horas | Dev | ✅ Completado |
 | 2. Preservar Dashboard | 1 hora | Dev | ⏳ Pendiente |
 | 3. Config Sheet-API | 2-3 horas | Dev | ⏳ Pendiente |
 | 4. Config Jam Vientos | 2-3 horas | Dev | ⏳ Pendiente |
@@ -1315,14 +1597,36 @@ ci: cambios en CI/CD
 | 6. Scripts Deploy | 2 horas | DevOps | ⏳ Pendiente |
 | 7. Docs Deploy | 2-3 horas | Dev | ⏳ Pendiente |
 | 8. Testing | 3-4 horas | QA/Dev | ⏳ Pendiente |
-| **TOTAL** | **17-23 horas** | | |
+| **TOTAL v1.0** | **17-23 horas** | | |
 
-**Hitos**:
+**Hitos v1.0**:
 - ✅ Día 1-2: Documentación completa y configuración local
 - ⏳ Día 3-4: Dockerización y scripts de deploy
 - ⏳ Día 5: Testing local completo
 - ⏳ Día 6: Deploy a VPS y testing producción
 - ⏳ Día 7: Ajustes finales y go-live
+
+### Extensión v2.0 (Multi-Evento + Lector Avanzado)
+
+| Fase | Duración | Responsable | Estado |
+|------|----------|-------------|--------|
+| 9. Multi-Evento + Portada | 8-12 horas | Dev | ⏳ Post-v1.0 |
+| 10. Lector de Partituras | 12-16 horas | Dev | ⏳ Post-v1.0 |
+| **TOTAL v2.0** | **20-28 horas** | | |
+
+**Hitos v2.0** (Post-producción v1.0):
+- ⏳ Semana 1-2: Multi-evento, portada, calendario
+- ⏳ Semana 3-4: Lector de partituras avanzado
+- ⏳ Semana 5: Testing en móviles reales
+- ⏳ Semana 6: Deploy v2.0 y validación con músicos
+
+### Total del Proyecto Completo
+
+| Versión | Horas | Timeline |
+|---------|-------|----------|
+| v1.0 (Producción básica) | 17-23h | 1 semana |
+| v2.0 (Features avanzadas) | 20-28h | 4-6 semanas |
+| **TOTAL** | **37-51h** | **5-7 semanas** |
 
 ---
 

@@ -30,14 +30,14 @@ Esta sesión documenta la planificación completa para llevar a producción el e
 
 ### 📋 [Plan de Producción Completo](./plan-produccion.md)
 
-**Contenido**:
+**Contenido**: Plan detallado para producción v1.0 y extensión v2.0
 - Análisis del ecosistema actual (todas las apps)
 - Arquitectura detallada de Sheet-API y Jam de Vientos
-- Plan de implementación en 8 fases
+- Plan de implementación en **10 fases** (8 para v1.0, 2 para v2.0)
 - Configuraciones Docker y Nginx
 - Scripts de deployment
 - Workflow de Git con branches
-- Cronograma estimado (17-23 horas)
+- Cronograma estimado (v1.0: 17-23h, v2.0: 20-28h)
 - Consideraciones de seguridad
 - Roadmap post-producción
 
@@ -45,13 +45,37 @@ Esta sesión documenta la planificación completa para llevar a producción el e
 1. Análisis del Ecosistema Actual
 2. Arquitectura Actual (modelos, endpoints, integración)
 3. Decisiones de Arquitectura para Producción
-4. Plan de Implementación por Fases (8 fases)
+4. Plan de Implementación por Fases (10 fases)
 5. Workflow de Git
 6. Reutilización de Componentes y Librerías
-7. Cronograma Estimado
+7. Cronograma Estimado (v1.0 + v2.0)
 8. Consideraciones de Seguridad
 9. Próximos Pasos (Post-Producción)
 10. Recursos y Referencias
+
+### 🚀 [Roadmap Jam de Vientos v2.0](./roadmap-jam-vientos-v2.md)
+
+**Contenido**: Especificaciones técnicas completas para v2.0
+- Visión general de la plataforma multi-evento
+- Arquitectura de URLs dinámicas con slugs
+- Diseño detallado de página portada
+- Especificación completa del lector de partituras avanzado
+- Stack tecnológico adicional (PDF.js, FullCalendar, Web Audio API)
+- Endpoints API necesarios
+- Plan de implementación detallado por fase
+- Consideraciones técnicas y de performance
+- Ejemplos de código para cada feature
+
+**Secciones principales**:
+1. Visión General (transformación a plataforma completa)
+2. Arquitectura de URLs Dinámicas
+3. Página Portada (hero, calendario, galería, sobre nosotros)
+4. Lector de Partituras Avanzado (6 sub-features)
+5. Stack Tecnológico Adicional
+6. Endpoints API Necesarios
+7. Plan de Implementación (FASE 9 y 10)
+8. Consideraciones Técnicas
+9. Cronograma y Recursos (~55h adicionales)
 
 ---
 
@@ -148,6 +172,41 @@ Esta sesión documenta la planificación completa para llevar a producción el e
 **Estado**: ⏳ Pendiente
 **Rama Git**: `feature/production-testing`
 **Duración estimada**: 3-4 horas
+
+---
+
+## Fases v2.0 (Post-Producción)
+
+### ⏳ FASE 9: Multi-Evento y Portada
+- Implementar generación de slugs en backend
+- Crear portada profesional con hero section
+- Integrar FullCalendar para calendario interactivo
+- Crear sección "Sobre Nosotros"
+- Implementar galería de fotos (PhotoSwipe)
+- Dynamic routes: `jamdevientos.com/{evento-slug}`
+- Metadata dinámica para SEO
+
+**Estado**: ⏳ Post-v1.0
+**Rama Git**: `feature/multi-event-architecture`
+**Duración estimada**: 8-12 horas
+
+**Entregable**: Sitio multi-evento con portada institucional
+
+---
+
+### ⏳ FASE 10: Lector de Partituras Avanzado
+- Visor PDF con react-pdf + PDF.js
+- Control de tempo (0.5x - 2.0x) preservando pitch
+- Metrónomo integrado con beat visual
+- Scrolling automático sincronizado con audio
+- Modo performance (fullscreen, wake lock)
+- Optimización para iOS y Android
+
+**Estado**: ⏳ Post-v1.0
+**Rama Git**: `feature/advanced-sheet-music-reader`
+**Duración estimada**: 12-16 horas
+
+**Entregable**: Herramienta profesional de lectura de partituras para músicos
 
 ---
 
@@ -257,31 +316,61 @@ POST   /api/v1/events/                          # Crear evento
 
 ## Próximos Pasos
 
-### Inmediatos (Esta semana)
-1. ✅ Completar documentación (FASE 1)
-2. ⏳ Preservar dashboard admin (FASE 2)
-3. ⏳ Configurar Sheet-API para producción (FASE 3)
-4. ⏳ Configurar Jam de Vientos para producción (FASE 4)
+### v1.0: Producción Básica (1 semana)
+1. ✅ Completar documentación (FASE 1) - **Completado**
+2. ⏳ Preservar dashboard admin (FASE 2) - 1h
+3. ⏳ Configurar Sheet-API para producción (FASE 3) - 2-3h
+4. ⏳ Configurar Jam de Vientos para producción (FASE 4) - 2-3h
+5. ⏳ Crear Docker Compose producción (FASE 5) - 3-4h
+6. ⏳ Crear scripts de deployment (FASE 6) - 2h
+7. ⏳ Completar documentación deployment (FASE 7) - 2-3h
+8. ⏳ Testing completo (FASE 8) - 3-4h
 
-### Corto plazo (Próximas 2 semanas)
-5. ⏳ Crear Docker Compose producción (FASE 5)
-6. ⏳ Crear scripts de deployment (FASE 6)
-7. ⏳ Completar documentación deployment (FASE 7)
-8. ⏳ Testing completo (FASE 8)
+**Total**: 17-23 horas
+**Entregable**: Jam de Vientos v1.0 en producción (solo lectura, evento único)
 
-### Mediano plazo (Post-producción)
+### v2.0: Plataforma Multi-Evento (4-6 semanas)
+
+#### FASE 9: Multi-Evento y Portada (8-12h)
+- ⏳ Implementar slugs y EventPhoto model en backend
+- ⏳ Crear portada con hero section y próximo evento destacado
+- ⏳ Integrar FullCalendar para calendario interactivo
+- ⏳ Crear sección "Sobre Nosotros" institucional
+- ⏳ Implementar galería de fotos con PhotoSwipe
+- ⏳ URLs dinámicas SEO-friendly: `jamdevientos.com/{slug-evento}`
+
+**Entregable**: Sitio multi-evento con portada profesional
+
+#### FASE 10: Lector de Partituras Avanzado (12-16h)
+- ⏳ Visor PDF de alta calidad (react-pdf + PDF.js)
+- ⏳ Control de tempo (0.5x - 2.0x) con Web Audio API
+- ⏳ Metrónomo integrado con click audible y beat visual
+- ⏳ Scrolling automático sincronizado con audio
+- ⏳ Modo performance (fullscreen, wake lock, no-sleep)
+- ⏳ Optimización para móviles (iOS Safari, Android Chrome)
+
+**Entregable**: Herramienta profesional para músicos
+
+**Total v2.0**: 20-28 horas
+
+### v2.1+: Visión Futura
 - Implementar autenticación JWT en Jam de Vientos
-- Reactivar dashboard admin con edición
-- Agregar analytics y monitoreo
-- Implementar PWA
-- SEO avanzado
+- Reactivar dashboard admin con edición desde jam-de-vientos
+- Anotaciones en partituras (dibujar, notas de texto)
+- Loop de secciones para práctica
+- Compartir partituras por WhatsApp/email
+- Analytics y monitoreo (Google Analytics o Plausible)
+- PWA (installable app)
+- SEO avanzado con sitemap y structured data
+- Multilenguaje (i18n)
 
 ---
 
 ## Recursos
 
 ### Documentación Técnica
-- [Plan de Producción Completo](./plan-produccion.md) - **Leer primero**
+- [Plan de Producción Completo v1.0 + v2.0](./plan-produccion.md) - **Leer primero** (10 fases)
+- [Roadmap Jam de Vientos v2.0](./roadmap-jam-vientos-v2.md) - **Especificaciones técnicas detalladas**
 - [Sheet-API CLAUDE.md](../sheet-api/CLAUDE.md)
 - [Jam de Vientos CLAUDE.md](../jam-de-vientos/CLAUDE.md)
 - [Music-Projects CLAUDE.md](../CLAUDE.md)

@@ -63,39 +63,70 @@ Sheet music management system for wind orchestras and bands with automatic trans
 
 ## Orchestration and Multi-Service Management
 
-For managing multiple applications together, see the detailed [ORCHESTRATION.md](./ORCHESTRATION.md) guide.
+🎯 **Architecture:** This project uses a **centralized API** where **Sheet-API backend (port 8000)** is the core API consumed by all frontend applications.
 
-### Quick Start Commands
-
-**Start all applications:**
-```bash
-./scripts/start-all.sh
+```
+        Sheet-API Backend (8000) ← CORE API
+               ↓          ↓
+        Jam Frontend  Music Learning
+         (3001)        Frontend (3002)
 ```
 
-**Start API stack only (Sheet-API + Jam de Vientos):**
+For detailed orchestration documentation, see [ORCHESTRATION.md](./ORCHESTRATION.md).
+
+### Quick Start with Profiles
+
+The orchestration system uses **smart profiles** that start only what you need:
+
+**Work on Jam de Vientos:**
 ```bash
-./scripts/start-api-stack.sh
+./scripts/start.sh jam              # Starts: sheet-api backend + jam frontend
+./scripts/logs.sh jam -f            # View logs
+./scripts/stop.sh jam               # Stop jam (backend keeps running)
 ```
 
-**Stop all applications:**
+**Work on Music Learning:**
 ```bash
-./scripts/stop-all.sh
+./scripts/start.sh music-learning   # Starts: sheet-api backend + music-learning frontend
+./scripts/logs.sh music-learning -f # View logs
+./scripts/stop.sh music-learning    # Stop music-learning
 ```
 
-**View logs:**
+**Work on Sheet-API admin:**
 ```bash
-./scripts/logs.sh [service-name] -f
-# Available services: sheet-api, jam-de-vientos, music-learning, empiv, all
+./scripts/start.sh api              # Starts: full sheet-api (backend + frontend + db)
+./scripts/logs.sh sheet-api -f      # View logs
+./scripts/stop.sh api               # Stop sheet-api
 ```
 
-### Service URLs (when all running)
-- Sheet-API Frontend: http://localhost:3000
-- Sheet-API Backend: http://localhost:8000
-- Jam de Vientos: http://localhost:3001
-- Music Learning (FE): http://localhost:3002
-- Music Learning (BE): http://localhost:8001
-- EMPIV Web (FE): http://localhost:3003
-- EMPIV Web (BE): http://localhost:8002
+**Start everything:**
+```bash
+./scripts/start.sh all              # Starts: all services
+./scripts/stop.sh all               # Stop everything
+./scripts/stop.sh all -v            # Stop and clear databases
+```
+
+**Backend-only development:**
+```bash
+./scripts/start.sh core             # Starts: only sheet-api backend + db
+```
+
+### Available Profiles
+
+| Profile | Starts | Use Case |
+|---------|--------|----------|
+| `jam` | Sheet-API backend + Jam frontend | Working on Jam de Vientos |
+| `music-learning` | Sheet-API backend + Music Learning frontend | Working on Music Learning |
+| `api` | Sheet-API full stack | Working on Sheet-API admin |
+| `core` | Sheet-API backend only | Backend API development |
+| `all` | All services | Full-stack development |
+
+### Service URLs
+
+- **Sheet-API Admin:** http://localhost:3000
+- **Sheet-API Backend:** http://localhost:8000 (Core API used by all)
+- **Jam de Vientos:** http://localhost:3001
+- **Music Learning:** http://localhost:3002
 
 ## Common Development Commands
 
