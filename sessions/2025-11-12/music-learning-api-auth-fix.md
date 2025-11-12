@@ -143,16 +143,42 @@ Se eliminó completamente el directorio `/backend/` que contenía el backend Dja
 
 **Justificación:** El CLAUDE.md ya documentaba que el backend local no debía usarse y toda la funcionalidad API ahora viene de Sheet-API centralizado.
 
+## Limpieza de Variables de Entorno
+
+Después de eliminar el backend, se limpiaron los archivos `.env.example` y `.env`:
+
+**Variables Eliminadas (ya no necesarias):**
+- ❌ `DATABASE_URL`, `REDIS_URL`, `CELERY_BROKER_URL` (backend services)
+- ❌ Django settings: `SECRET_KEY`, `DEBUG`, `ALLOWED_HOSTS`, `CORS_ALLOWED_ORIGINS`
+- ❌ N8N credentials: `N8N_BASIC_AUTH_USER`, `N8N_BASIC_AUTH_PASSWORD`
+- ❌ JWT settings: `JWT_SECRET_KEY`, `JWT_ALGORITHM`, `JWT_*_EXPIRE_*` (manejado por Sheet-API)
+- ❌ Email: `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD`
+- ❌ Storage paths: `MEDIA_ROOT`, `STATIC_ROOT`
+- ❌ Old React vars: `REACT_APP_API_URL`, `REACT_APP_WS_URL` (reemplazados por `VITE_*`)
+
+**Variables Mantenidas (frontend solo):**
+- ✅ `VITE_API_URL=http://localhost:8000/api` (Sheet-API backend)
+- ✅ `VITE_WS_URL=ws://localhost:8000`
+- ✅ `VITE_APP_NAME`, `VITE_APP_VERSION`
+- ✅ `NODE_ENV`
+- ✅ Feature flags: `VITE_ENABLE_ANALYTICS`, `VITE_ENABLE_ERROR_REPORTING`
+
 ## Estado Final
 
 ✅ **Completado exitosamente:**
 1. Unificación de autenticación en el frontend
-2. Eliminación del backend deprecated
-3. Código pusheado al repositorio remoto
-4. Documentación actualizada
-5. Rama de feature eliminada
+2. Eliminación del backend deprecated (69 archivos)
+3. Limpieza de variables de entorno (solo frontend vars)
+4. Código pusheado al repositorio remoto
+5. Documentación actualizada
+6. Rama de feature eliminada
 
 **Repositorio limpio y actualizado en:** nanoska/music-learning-app
+
+**Commits realizados:**
+- `fix: unify API authentication to use Zustand store`
+- `chore: remove deprecated backend directory`
+- `chore: clean up .env.example - remove backend variables`
 
 ## Notas Adicionales
 
